@@ -1,6 +1,6 @@
-# Flow-Field-PathFinding
-Flow field pathfinding algorithm implementation
 # 流场寻路算法简单实现
+Flow field pathfinding algorithm implementation
+
 - 当前实现的主要效果：
   1、地图上随机分布移动目标；
   2、移动目标可绕过障碍物，沿着地图的流场找到最短路径（最小代价的路径）到达目标点；
