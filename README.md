@@ -1,6 +1,6 @@
 # 流场寻路算法简单实现
 Flow field pathfinding algorithm implementation
-
+* key words: `OpenGl` `Dijkstra` `Flow Field` `Path Finding`<br>
 * 当前实现的主要效果：<br>
   1.地图上随机分布200个移动目标；<br>
   2.移动目标可绕过障碍物，沿着地图的流场找到最短路径（最小代价的路径）到达目标点；<br>
