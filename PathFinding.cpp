@@ -1,13 +1,13 @@
 #include "PathFinding.h"
 
-SGridInfo **gMap			= NULL;		//µØÍ¼;
+SGridInfo **gMap			= NULL;		//åœ°å›¾;
 
 float gCurWinWidth			= WINDOW_WIDTH;
 float gCurWinHeight			= WINDOW_HEIGHT;
-int gClickDownX				= -1;		//ÉÏ´ÎÊó±ê°´ÏÂµÄÎ»ÖÃ;ÏñËØ×ø±ê, -1±íÊ¾ÎŞÊó±êµã»÷ÊÂ¼ş;
+int gClickDownX				= -1;		//ä¸Šæ¬¡é¼ æ ‡æŒ‰ä¸‹çš„ä½ç½®;åƒç´ åæ ‡, -1è¡¨ç¤ºæ— é¼ æ ‡ç‚¹å‡»äº‹ä»¶;
 int gClickDownY				= -1; 
-SCoordinate gDest(0, 0);				//ÖÕµãÎ»ÖÃ;
-SMoveObject gObjectPosition[MOVE_OBJECT_NUM];//ÒÆ¶¯Ä¿±êµÄÎ»ÖÃ;
+SCoordinate gDest(0, 0);				//ç»ˆç‚¹ä½ç½®;
+SMoveObject gObjectPosition[MOVE_OBJECT_NUM];//ç§»åŠ¨ç›®æ ‡çš„ä½ç½®;
 
 void SetObstocle(int x, int y)
 {
@@ -56,17 +56,17 @@ void DrawString(const string &strn) {
 	static int isFirstCall = 1;  
 	static GLuint lists;  
 	const char *str = strn.c_str();  
-	if (isFirstCall) { // Èç¹ûÊÇµÚÒ»´Îµ÷ÓÃ£¬Ö´ĞĞ³õÊ¼»¯;  
-		// ÎªÃ¿Ò»¸öASCII×Ö·û²úÉúÒ»¸öÏÔÊ¾ÁĞ±í;  
+	if (isFirstCall) { // å¦‚æœæ˜¯ç¬¬ä¸€æ¬¡è°ƒç”¨ï¼Œæ‰§è¡Œåˆå§‹åŒ–;  
+		// ä¸ºæ¯ä¸€ä¸ªASCIIå­—ç¬¦äº§ç”Ÿä¸€ä¸ªæ˜¾ç¤ºåˆ—è¡¨;  
 		isFirstCall = 0;  
 
-		// ÉêÇëMAX_CHAR¸öÁ¬ĞøµÄÏÔÊ¾ÁĞ±í±àºÅ; 
+		// ç”³è¯·MAX_CHARä¸ªè¿ç»­çš„æ˜¾ç¤ºåˆ—è¡¨ç¼–å·; 
 		lists = glGenLists(MAX_CHAR);  
 
-		// °ÑÃ¿¸ö×Ö·ûµÄ»æÖÆÃüÁî¶¼×°µ½¶ÔÓ¦µÄÏÔÊ¾ÁĞ±íÖĞ;  
+		// æŠŠæ¯ä¸ªå­—ç¬¦çš„ç»˜åˆ¶å‘½ä»¤éƒ½è£…åˆ°å¯¹åº”çš„æ˜¾ç¤ºåˆ—è¡¨ä¸­;  
 		wglUseFontBitmaps(wglGetCurrentDC(), 0, MAX_CHAR, lists);  
 	}  
-	// µ÷ÓÃÃ¿¸ö×Ö·û¶ÔÓ¦µÄÏÔÊ¾ÁĞ±í£¬»æÖÆÃ¿¸ö×Ö·û;  
+	// è°ƒç”¨æ¯ä¸ªå­—ç¬¦å¯¹åº”çš„æ˜¾ç¤ºåˆ—è¡¨ï¼Œç»˜åˆ¶æ¯ä¸ªå­—ç¬¦;  
 	for (; *str != '\0'; ++str)  
 		glCallList(lists + *str);  
 }  
@@ -117,12 +117,12 @@ void InitMap(int hGridNum, int vGridNum)
 			for (int y = 0; y < vGridNum; ++y)
 			{
 				gMap[x][y].d = ED_D;
-				//gMap[x][y].c = rand() % 10 + 15;	//·Ç¾ùÔÈµØÍ¼£¬Ã¿¸ö½ÚµãµÄ´ú¼Û·¶Î§£¨15~25£©;
-				gMap[x][y].c = 20;				//¾ùÔÈµØÍ¼;
+				//gMap[x][y].c = rand() % 10 + 15;	//éå‡åŒ€åœ°å›¾ï¼Œæ¯ä¸ªèŠ‚ç‚¹çš„ä»£ä»·èŒƒå›´ï¼ˆ15~25ï¼‰;
+				gMap[x][y].c = 20;				//å‡åŒ€åœ°å›¾;
 			}
 		}
 
-		// ÉèÖÃÕÏ°­Îï;
+		// è®¾ç½®éšœç¢ç‰©;
 		for (int x = hGridNum/5; x <= hGridNum*4/5; ++x)
 		{
 			SetObstocle(x, vGridNum/2);
@@ -160,7 +160,7 @@ void ReleaseMap(int hGridNum)
 }
 void PathFindDisplay()
 {
-	int hGridNum = WORLD_WIDTH/GRID_SIZE;		//Ë®Æ½ºÍ´¹Ö±·½ÏòÍø¸ñÊı;
+	int hGridNum = WORLD_WIDTH/GRID_SIZE;		//æ°´å¹³å’Œå‚ç›´æ–¹å‘ç½‘æ ¼æ•°;
 	int vGridNum = WORLD_HEIGHT/GRID_SIZE;
 
 	InitMap(hGridNum, vGridNum);
@@ -177,36 +177,11 @@ void PathFindDisplay()
 
 void DrawMap(int hGridNum, int vGridNum)
 {
-	//ÉèÖÃÑÕÉ«;  
+	//è®¾ç½®é¢œè‰²;  
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(0.5f, 0.9f, 0.89f); 
-#pragma region verticesArray
-/*#define VERTEX_ARRAY 0
-#if VERTEX_ARRAY
-	glEnableClientState(GL_VERTEX_ARRAY);
-	static GLfloat *fVertices = NULL;
-	int verCnt = 4 * (hGridNum + vGridNum + 2);
-	static bool firstCall = true;
-	if (firstCall)
-	{
-		GLfloat xCoor = 0.0f;
-		fVertices = new GLfloat[verCnt];
-		for (int x = 0; x <= 4*hGridNum; x += 4)
-		{
-			fVertices[x] = xCoor;
-			fVertices[x + 1] = 0.0f;
-			fVertices[x + 2] = xCoor;
-			fVertices[x + 3] = WORLD_HEIGHT;
 
-			xCoor += GRID_SIZE;
-		}
-		firstCall = false;
-	}
-	glVertexPointer(2, GL_FLOAT, 0, fVertices);
-#endif
-*/
-#pragma endregion  
-	// »æÖÆ»ù´¡Íø¸ñ;
+	// ç»˜åˆ¶åŸºç¡€ç½‘æ ¼;
 	GLfloat lineWidth = 0.5f;  
 	GLfloat xCoor = 0.0f;
 	GLfloat yCoor = 0.0f; 
@@ -227,29 +202,6 @@ void DrawMap(int hGridNum, int vGridNum)
 			yCoor = 0.0f;
 		}	
 	glEnd();
-/*
-	glBegin(GL_LINES);  
-#if VERTEX_ARRAY
-	 	for (int i = 0; i <= 2 * hGridNum; ++i)
-	 	{
-	 		glArrayElement(i);
-	 	}
-#else
-  		for (int x = 0; x <= hGridNum; ++x)
- 		{
- 			glVertex2f(xCoor, 0.0f);  
- 			glVertex2f(xCoor, WORLD_HEIGHT);  
- 			xCoor += GRID_SIZE;
- 		}
- 		for (int y = 0; y <= vGridNum; ++y)
- 		{
- 			glVertex2f(0.0f, yCoor);  
- 			glVertex2f(WORLD_WIDTH, yCoor);
- 			yCoor += GRID_SIZE;
- 		}
-
-	glEnd(); 
-#endif*/
 }
 void DrawObstacle(int hGridNum, int vGridNum)
 {
@@ -350,7 +302,7 @@ void DrawPoint(const SPoint &p, GLint size, const SColorRGB &c)
 		glVertex2f(p.x, p.y);
 	glEnd();
 }
-void DrawArraw(const SPoint &sp, const SPoint &ep)  //´©ÈëÊÀ½ç×ø±ê;
+void DrawArraw(const SPoint &sp, const SPoint &ep)  //ç©¿å…¥ä¸–ç•Œåæ ‡;
 {
 	DrawPoint(sp, 2, SColorRGB(0.5f, 0.1f, 0.3f));
 
@@ -372,33 +324,33 @@ void MouseClick(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON)
 	{
-		SCoordinate   ci;			//µã»÷Î»ÖÃµÄmap×ø±ê;
-		static SPoint cp;			//µã»÷ÏÂÊ±Î»ÖÃµÄÏñËØµãÎ»ÖÃ;
+		SCoordinate   ci;			//ç‚¹å‡»ä½ç½®çš„mapåæ ‡;
+		static SPoint cp;			//ç‚¹å‡»ä¸‹æ—¶ä½ç½®çš„åƒç´ ç‚¹ä½ç½®;
 		switch (state)
 		{
 		case GLUT_DOWN:
-#if MYDEBUG
-			ci = World2Index(Pixel2World(SPoint(x, y)));    //Íø¸ñºá×İ×ø±ê;			
-#endif
 			gClickDownX = cp.x = x; 
 			gClickDownY = cp.y = y;
+#if MYDEBUG
+			ci = World2Index(Pixel2World(SPoint(x, y)));    //ç½‘æ ¼æ¨ªçºµåæ ‡;
 			PRINT("Mouse clicked down point (%d,%d):(%d,%d)\n",x, y, ci.x, ci.y);
+#endif
 			break;
 
 		case GLUT_UP:
-			ci = World2Index(Pixel2World(SPoint(x, y)));    //Íø¸ñºá×ø±ê;
+			ci = World2Index(Pixel2World(SPoint(x, y)));    //ç½‘æ ¼æ¨ªåæ ‡;
 			PRINT("Mouse clicked up point (%d,%d):(%d,%d)\n",x, y, ci.x, ci.y); 
 			if (abs(x - cp.x) < GRID_SIZE*gCurWinWidth/WORLD_WIDTH*1.0/2.0 &&
 				abs(y - cp.y) < GRID_SIZE*gCurWinHeight/WORLD_HEIGHT*1.0/2.0
-				)				//Èç¹ûÊó±êÍÏ×§µÄÆ«ÒÆÁ¿<1/2¸öÍø¸ñ£¬ÔòÎªÖØÖÃÄ¿±êµã;
+				)				//å¦‚æœé¼ æ ‡æ‹–æ‹½çš„åç§»é‡<1/2ä¸ªç½‘æ ¼ï¼Œåˆ™ä¸ºé‡ç½®ç›®æ ‡ç‚¹;
 			{
 				if (gMap[ci.x][ci.y].c != INFI)
 				{
-					//±ê¼ÇÖÕµã;
+					//æ ‡è®°ç»ˆç‚¹;
 					glClear(GL_COLOR_BUFFER_BIT);
 					SetDestination(ci);
 					CalcFlowField(ci, WORLD_WIDTH/GRID_SIZE, WORLD_HEIGHT/GRID_SIZE);
-					PathFindDisplay();				//»æÖÆËùÓĞÎïÌå;
+					PathFindDisplay();				//ç»˜åˆ¶æ‰€æœ‰ç‰©ä½“;
 					glFlush();
 				}
 			}
@@ -417,9 +369,9 @@ void MouseMove(int x, int y)
 		return;
 	}
 	
-	SCoordinate dIdx = World2Index(Pixel2World(SPoint(x, y)));  //µ±Ç°Êó±êÎ»ÖÃ¶ÔÓ¦µÄmap×ø±ê;
+	SCoordinate dIdx = World2Index(Pixel2World(SPoint(x, y)));  //å½“å‰é¼ æ ‡ä½ç½®å¯¹åº”çš„mapåæ ‡;
 	bool drawObs = false;
-	if (abs(x - gClickDownX) >= GRID_SIZE*gCurWinWidth/WORLD_WIDTH*1.0/2.0)  //x·½Ïò»¬¶¯;
+	if (abs(x - gClickDownX) >= GRID_SIZE*gCurWinWidth/WORLD_WIDTH*1.0/2.0)  //xæ–¹å‘æ»‘åŠ¨;
 	{
 		int derction = (x - gClickDownX)/abs(x - gClickDownX);
 		gClickDownX = x + derction*GRID_SIZE*gCurWinWidth/WORLD_WIDTH*1.0/2.0;
@@ -427,7 +379,7 @@ void MouseMove(int x, int y)
 		gClickDownX = min(gClickDownX, gCurWinWidth);
 		drawObs = true;
 	}
-	if (abs(y - gClickDownY) >= GRID_SIZE*gCurWinHeight/WORLD_HEIGHT*1.0/2.0) //y·½Ïò»¬¶¯;
+	if (abs(y - gClickDownY) >= GRID_SIZE*gCurWinHeight/WORLD_HEIGHT*1.0/2.0) //yæ–¹å‘æ»‘åŠ¨;
 	{
 		int direction = (y - gClickDownY)/abs(y - gClickDownY);
 		gClickDownY = y + direction*GRID_SIZE*gCurWinHeight/WORLD_HEIGHT*1.0/2.0;
@@ -450,10 +402,10 @@ void MouseMove(int x, int y)
 void Initial()  
 {  
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);				//ÇåÆÁÑÕÉ«;  
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);				//æ¸…å±é¢œè‰²;  
 	glMatrixMode(GL_PROJECTION);  
-	glLoadIdentity();									//»Øµ½Ô­µã;						
-	gluOrtho2D(0.0, WORLD_WIDTH, 0.0, WORLD_HEIGHT);	//Í¶Ó°µ½²Ã¼ô´°´óĞ¡£ºÊÀ½ç;  
+	glLoadIdentity();									//å›åˆ°åŸç‚¹;						
+	gluOrtho2D(0.0, WORLD_WIDTH, 0.0, WORLD_HEIGHT);	//æŠ•å½±åˆ°è£å‰ªçª—å¤§å°ï¼šä¸–ç•Œ;  
 }  
 void ReshapeWin(int w, int h)
 {
@@ -477,9 +429,9 @@ void ReshapeWin(int w, int h)
 		gCurWinHeight = max(1, gCurWinHeight);
 	}
 }
-SPoint JumpToSuitablePos(const SCoordinate &curIdx)		//¸ù¾İ¸ÃµãÖÜÎ§µÄÕÏ°­ÎïÇé¿ö£¬¾ö¶¨ÒÆ¶¯Ä¿±ê¿ÉÌøÔ¾µÄÎ»ÖÃ;
+SPoint JumpToSuitablePos(const SCoordinate &curIdx)		//æ ¹æ®è¯¥ç‚¹å‘¨å›´çš„éšœç¢ç‰©æƒ…å†µï¼Œå†³å®šç§»åŠ¨ç›®æ ‡å¯è·³è·ƒçš„ä½ç½®;
 {
-	return SPoint(rand() % 6 - 3, rand() % 6 - 3);		//Êµ¼Ê¹¦ÄÜÓĞ´ıºóĞøÍê³É;
+	return SPoint(rand() % 6 - 3, rand() % 6 - 3);		//å®é™…åŠŸèƒ½æœ‰å¾…åç»­å®Œæˆ;
 }
 void ChangeObjectPosition()
 {
@@ -490,8 +442,8 @@ void ChangeObjectPosition()
 	JumpToSuitablePos(SCoordinate(1,1));
 	for (int i = 0; i < MOVE_OBJECT_NUM; ++i)
 	{
-		SCoordinate op = World2Index(gObjectPosition[i].p);
-		float		moveSpeed = CALC_MOVE_SPEED(gObjectPosition[i], op);
+		SCoordinate op 	      = World2Index(gObjectPosition[i].p);
+		float	    moveSpeed = CALC_MOVE_SPEED(gObjectPosition[i], op);
 		switch (gMap[op.x][op.y].d)
 		{
 		case ED_U:
@@ -522,7 +474,7 @@ void ChangeObjectPosition()
 			gObjectPosition[i].p.x += moveSpeed;
 			gObjectPosition[i].p.y -= moveSpeed;
 			break;
-		default:			//µ±µ½´ïÄ³¸öÎŞ·½ÏòµÄµã£¬ÔòÔÚ¸ÃµãÖÜÎ§Ìø¶¯;
+		default:			//å½“åˆ°è¾¾æŸä¸ªæ— æ–¹å‘çš„ç‚¹ï¼Œåˆ™åœ¨è¯¥ç‚¹å‘¨å›´è·³åŠ¨;
 			{
 				SPoint offset = JumpToSuitablePos(op);
 				gObjectPosition[i].p.x += offset.x;
@@ -538,13 +490,13 @@ void ChangeObjectPosition()
 	}
 }
 
-/*********¼ÆËãÁ÷³¡**********/
-bool IsCorner(const SCoordinate &p, const SCoordinate &s)   //ÊÇ·ñÔÚÕÏ°­Îï¹Õ½Ç´¦£¬ÊÇÔò½ûÖ¹Ğ±¶Ô½Ç´©Ô½;
+/*********è®¡ç®—æµåœº**********/
+bool IsCorner(const SCoordinate &p, const SCoordinate &s)   //æ˜¯å¦åœ¨éšœç¢ç‰©æ‹è§’å¤„ï¼Œæ˜¯åˆ™ç¦æ­¢æ–œå¯¹è§’ç©¿è¶Š;
 {
 	int x = p.x - s.x;
 	int y = p.y - s.y;
 	
-	if (x != 0 && y != 0)  //Ğ±¶Ô½Ç¹ØÏµ;
+	if (x != 0 && y != 0)  //æ–œå¯¹è§’å…³ç³»;
 	{
 		if (EGT_OBSTOCLE == gMap[s.x + x][s.y].t)
 		{
@@ -559,12 +511,12 @@ bool IsCorner(const SCoordinate &p, const SCoordinate &s)   //ÊÇ·ñÔÚÕÏ°­Îï¹Õ½Ç´¦
 	}
 	return false;
 }
-int CalcCost(const SCoordinate &p, const SCoordinate &s)   //Â·¾¶´ú¼Ûº¯Êı¼ÆËã;
+int CalcCost(const SCoordinate &p, const SCoordinate &s)   //è·¯å¾„ä»£ä»·å‡½æ•°è®¡ç®—;
 {
-	int dirCost = 10 * sqrt((float)(abs(p.x-s.x)+abs(p.y-s.y)));		//·½Ïò³Í·£;Ğ±¶Ô½Ç³Í·£ÏµÊı´óÓÚË®Æ½»ò´¹Ö±·½Ïò;
+	int dirCost = 10 * sqrt((float)(abs(p.x-s.x)+abs(p.y-s.y)));		//æ–¹å‘æƒ©ç½š;æ–œå¯¹è§’æƒ©ç½šç³»æ•°å¤§äºæ°´å¹³æˆ–å‚ç›´æ–¹å‘;
 	return gMap[p.x][p.y].pl + gMap[s.x][s.y].c + dirCost; 
 }
-int ParentDirection(const SCoordinate &p, const SCoordinate &s)  //Í¨¹ı¸¸½ÚµãºÍ×Ô¼ºµÄ×ø±ê¼ÆËã·½Ïò;
+int ParentDirection(const SCoordinate &p, const SCoordinate &s)  //é€šè¿‡çˆ¶èŠ‚ç‚¹å’Œè‡ªå·±çš„åæ ‡è®¡ç®—æ–¹å‘;
 {	
 	int x = p.x - s.x;
 	int y = p.y - s.y;
@@ -583,9 +535,9 @@ void UpdateOpenList(multiset<SOpenGridInfo> &openList, const SCoordinate &cneter
 		for (int y = sy; y <= ey; ++y)
 		{
 			SGridInfo &curGrid = gMap[x][y];
-			if (EGT_NORMAL == curGrid.t)    //ÆÕÍ¨½Úµã;
+			if (EGT_NORMAL == curGrid.t)    //æ™®é€šèŠ‚ç‚¹;
 			{
-				if (IsCorner(cneterIdx, SCoordinate(x, y)))		//ÊÇ¹Õ½ÇµÄĞ±¶Ô½Çµã£¬ÔòÌø¹ı;
+				if (IsCorner(cneterIdx, SCoordinate(x, y)))		//æ˜¯æ‹è§’çš„æ–œå¯¹è§’ç‚¹ï¼Œåˆ™è·³è¿‡;
 				{
 					continue;
 				}
@@ -610,21 +562,21 @@ void UpdateOpenList(multiset<SOpenGridInfo> &openList, const SCoordinate &cneter
 void CalcFlowField(const SCoordinate &d, int hGridNum, int vGridNum)
 {
  	RecoverGridType();
-	multiset<SOpenGridInfo> openList;				//ÓĞĞò¶àÖØ¼¯ºÏ£¬ÉıĞòÅÅÁĞ;
+	multiset<SOpenGridInfo> openList;				//æœ‰åºå¤šé‡é›†åˆï¼Œå‡åºæ’åˆ—;
 	openList.insert(SOpenGridInfo(d, gMap[d.x][d.y].c));
-	SCoordinate		curIdx = d;						//µ±Ç°Ñ¡ÖĞµÄ×îÓÅÂ·¾¶½Úµã;
+	SCoordinate		curIdx = d;						//å½“å‰é€‰ä¸­çš„æœ€ä¼˜è·¯å¾„èŠ‚ç‚¹;
 	while (!openList.empty()) 
 	{
-		openList.erase(openList.begin());			//µ±Ç°µã¼ÓÈëcloseList;
+		openList.erase(openList.begin());			//å½“å‰ç‚¹åŠ å…¥closeList;
 		gMap[curIdx.x][curIdx.y].t = EGT_CLOSE;  
 
-		UpdateOpenList(openList, curIdx);			//¸üĞÂµ±Ç°µãÖÜÎ§µÄµãµ½OpenList;
+		UpdateOpenList(openList, curIdx);			//æ›´æ–°å½“å‰ç‚¹å‘¨å›´çš„ç‚¹åˆ°OpenList;
 		
 		if (openList.empty())
 		{
 			break;
 		}
-		curIdx = openList.begin()->c;				//Ñ¡Ôñµ±Ç°openlistÖĞ×îÓÅµÄÂ·¾¶µã;
+		curIdx = openList.begin()->c;				//é€‰æ‹©å½“å‰openlistä¸­æœ€ä¼˜çš„è·¯å¾„ç‚¹;
 	}
-	gMap[gDest.x][gDest.y].t = EGT_DESTINATION;		//»Ö¸´ÖÕµãµÄ×´Ì¬;
+	gMap[gDest.x][gDest.y].t = EGT_DESTINATION;		//æ¢å¤ç»ˆç‚¹çš„çŠ¶æ€;
 }
